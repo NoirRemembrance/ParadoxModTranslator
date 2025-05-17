@@ -7,6 +7,13 @@ This tool is designed to work with ".yml" localization files, which store the te
 
 *Note: For clarity, this guide will refer to the language you are translating from as "Original Language" and the language you are translating to as "New Language".*
 
+## ✅ Requirements
+To use this tool, ensure your system meets the following requirements:
+- Operating System: Windows 10 or later.
+- .NET Desktop Runtime: Version 8.0 or later.
+    - You can download it from the official .NET website: [Download .NET Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
+- Access to an LLM API.
+
 ## 📌 How to Use
 
 ### ⚙️ Setup
