@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             generateFilesContainer = new GroupBox();
-            toLanguageSelect = new ComboBox();
-            fromLanguageLabel = new Label();
-            fromLanguageSelect = new ComboBox();
-            toLanguageLabel = new Label();
-            generateButton = new Button();
-            selectedFilesToGeneratePanel = new FlowLayoutPanel();
-            addFilesToGenerateButton = new Button();
-            validateButton = new Button();
             clearGenerateButton = new Button();
+            validateButton = new Button();
+            addFilesToGenerateButton = new Button();
+            selectedFilesToGeneratePanel = new FlowLayoutPanel();
+            generateButton = new Button();
+            toLanguageLabel = new Label();
+            fromLanguageSelect = new ComboBox();
+            fromLanguageLabel = new Label();
+            toLanguageSelect = new ComboBox();
             translateFilesContainer = new GroupBox();
-            addFilesToTranslateButton = new Button();
-            selectedFilesToTranslatePanel = new FlowLayoutPanel();
-            translateButton = new Button();
             clearTranslateButton = new Button();
+            translateButton = new Button();
+            selectedFilesToTranslatePanel = new FlowLayoutPanel();
+            addFilesToTranslateButton = new Button();
             appContainer = new Panel();
             generateFilesContainer.SuspendLayout();
             translateFilesContainer.SuspendLayout();
@@ -69,71 +69,15 @@
             generateFilesContainer.TabStop = false;
             generateFilesContainer.Text = "Generate files to translate";
             // 
-            // toLanguageSelect
+            // clearGenerateButton
             // 
-            toLanguageSelect.DropDownStyle = ComboBoxStyle.DropDownList;
-            toLanguageSelect.FormattingEnabled = true;
-            toLanguageSelect.Location = new Point(473, 130);
-            toLanguageSelect.Name = "toLanguageSelect";
-            toLanguageSelect.Size = new Size(140, 23);
-            toLanguageSelect.TabIndex = 2;
-            // 
-            // fromLanguageLabel
-            // 
-            fromLanguageLabel.AutoSize = true;
-            fromLanguageLabel.Location = new Point(377, 92);
-            fromLanguageLabel.Name = "fromLanguageLabel";
-            fromLanguageLabel.Size = new Size(90, 15);
-            fromLanguageLabel.TabIndex = 4;
-            fromLanguageLabel.Text = "From Language";
-            // 
-            // fromLanguageSelect
-            // 
-            fromLanguageSelect.DropDownStyle = ComboBoxStyle.DropDownList;
-            fromLanguageSelect.FormattingEnabled = true;
-            fromLanguageSelect.Location = new Point(473, 89);
-            fromLanguageSelect.Name = "fromLanguageSelect";
-            fromLanguageSelect.Size = new Size(140, 23);
-            fromLanguageSelect.TabIndex = 1;
-            // 
-            // toLanguageLabel
-            // 
-            toLanguageLabel.AutoSize = true;
-            toLanguageLabel.Location = new Point(392, 133);
-            toLanguageLabel.Name = "toLanguageLabel";
-            toLanguageLabel.Size = new Size(75, 15);
-            toLanguageLabel.TabIndex = 4;
-            toLanguageLabel.Text = "To Language";
-            // 
-            // generateButton
-            // 
-            generateButton.Location = new Point(403, 178);
-            generateButton.Name = "generateButton";
-            generateButton.Size = new Size(75, 23);
-            generateButton.TabIndex = 0;
-            generateButton.Text = "Generate";
-            generateButton.UseVisualStyleBackColor = true;
-            generateButton.Click += GenerateButton_Click;
-            // 
-            // selectedFilesToGeneratePanel
-            // 
-            selectedFilesToGeneratePanel.AutoScroll = true;
-            selectedFilesToGeneratePanel.BackColor = SystemColors.ControlLightLight;
-            selectedFilesToGeneratePanel.BorderStyle = BorderStyle.FixedSingle;
-            selectedFilesToGeneratePanel.Location = new Point(12, 22);
-            selectedFilesToGeneratePanel.Name = "selectedFilesToGeneratePanel";
-            selectedFilesToGeneratePanel.Size = new Size(311, 179);
-            selectedFilesToGeneratePanel.TabIndex = 6;
-            // 
-            // addFilesToGenerateButton
-            // 
-            addFilesToGenerateButton.Location = new Point(329, 22);
-            addFilesToGenerateButton.Name = "addFilesToGenerateButton";
-            addFilesToGenerateButton.Size = new Size(75, 23);
-            addFilesToGenerateButton.TabIndex = 4;
-            addFilesToGenerateButton.Text = "Add Files";
-            addFilesToGenerateButton.UseVisualStyleBackColor = true;
-            addFilesToGenerateButton.Click += AddFilesToGenerateButton_Click;
+            clearGenerateButton.Location = new Point(329, 51);
+            clearGenerateButton.Name = "clearGenerateButton";
+            clearGenerateButton.Size = new Size(75, 23);
+            clearGenerateButton.TabIndex = 8;
+            clearGenerateButton.Text = "Clear";
+            clearGenerateButton.UseVisualStyleBackColor = true;
+            clearGenerateButton.Click += ClearGenerateButton_Click;
             // 
             // validateButton
             // 
@@ -145,15 +89,71 @@
             validateButton.UseVisualStyleBackColor = true;
             validateButton.Click += ValidateButton_Click;
             // 
-            // clearGenerateButton
+            // addFilesToGenerateButton
             // 
-            clearGenerateButton.Location = new Point(329, 51);
-            clearGenerateButton.Name = "clearGenerateButton";
-            clearGenerateButton.Size = new Size(75, 23);
-            clearGenerateButton.TabIndex = 8;
-            clearGenerateButton.Text = "Clear";
-            clearGenerateButton.UseVisualStyleBackColor = true;
-            clearGenerateButton.Click += ClearGenerateButton_Click;
+            addFilesToGenerateButton.Location = new Point(329, 22);
+            addFilesToGenerateButton.Name = "addFilesToGenerateButton";
+            addFilesToGenerateButton.Size = new Size(75, 23);
+            addFilesToGenerateButton.TabIndex = 4;
+            addFilesToGenerateButton.Text = "Add Files";
+            addFilesToGenerateButton.UseVisualStyleBackColor = true;
+            addFilesToGenerateButton.Click += AddFilesToGenerateButton_Click;
+            // 
+            // selectedFilesToGeneratePanel
+            // 
+            selectedFilesToGeneratePanel.AutoScroll = true;
+            selectedFilesToGeneratePanel.BackColor = SystemColors.ControlLightLight;
+            selectedFilesToGeneratePanel.BorderStyle = BorderStyle.FixedSingle;
+            selectedFilesToGeneratePanel.Location = new Point(12, 22);
+            selectedFilesToGeneratePanel.Name = "selectedFilesToGeneratePanel";
+            selectedFilesToGeneratePanel.Size = new Size(311, 179);
+            selectedFilesToGeneratePanel.TabIndex = 6;
+            // 
+            // generateButton
+            // 
+            generateButton.Location = new Point(403, 178);
+            generateButton.Name = "generateButton";
+            generateButton.Size = new Size(75, 23);
+            generateButton.TabIndex = 0;
+            generateButton.Text = "Generate";
+            generateButton.UseVisualStyleBackColor = true;
+            generateButton.Click += GenerateButton_Click;
+            // 
+            // toLanguageLabel
+            // 
+            toLanguageLabel.AutoSize = true;
+            toLanguageLabel.Location = new Point(392, 133);
+            toLanguageLabel.Name = "toLanguageLabel";
+            toLanguageLabel.Size = new Size(75, 15);
+            toLanguageLabel.TabIndex = 4;
+            toLanguageLabel.Text = "To Language";
+            // 
+            // fromLanguageSelect
+            // 
+            fromLanguageSelect.DropDownStyle = ComboBoxStyle.DropDownList;
+            fromLanguageSelect.FormattingEnabled = true;
+            fromLanguageSelect.Location = new Point(473, 89);
+            fromLanguageSelect.Name = "fromLanguageSelect";
+            fromLanguageSelect.Size = new Size(140, 23);
+            fromLanguageSelect.TabIndex = 1;
+            // 
+            // fromLanguageLabel
+            // 
+            fromLanguageLabel.AutoSize = true;
+            fromLanguageLabel.Location = new Point(377, 92);
+            fromLanguageLabel.Name = "fromLanguageLabel";
+            fromLanguageLabel.Size = new Size(90, 15);
+            fromLanguageLabel.TabIndex = 4;
+            fromLanguageLabel.Text = "From Language";
+            // 
+            // toLanguageSelect
+            // 
+            toLanguageSelect.DropDownStyle = ComboBoxStyle.DropDownList;
+            toLanguageSelect.FormattingEnabled = true;
+            toLanguageSelect.Location = new Point(473, 130);
+            toLanguageSelect.Name = "toLanguageSelect";
+            toLanguageSelect.Size = new Size(140, 23);
+            toLanguageSelect.TabIndex = 2;
             // 
             // translateFilesContainer
             // 
@@ -170,25 +170,15 @@
             translateFilesContainer.TabStop = false;
             translateFilesContainer.Text = "Translate files";
             // 
-            // addFilesToTranslateButton
+            // clearTranslateButton
             // 
-            addFilesToTranslateButton.Location = new Point(329, 22);
-            addFilesToTranslateButton.Name = "addFilesToTranslateButton";
-            addFilesToTranslateButton.Size = new Size(75, 23);
-            addFilesToTranslateButton.TabIndex = 0;
-            addFilesToTranslateButton.Text = "Add Files";
-            addFilesToTranslateButton.UseVisualStyleBackColor = true;
-            addFilesToTranslateButton.Click += AddFilesToTranslateButton_Click;
-            // 
-            // selectedFilesToTranslatePanel
-            // 
-            selectedFilesToTranslatePanel.AutoScroll = true;
-            selectedFilesToTranslatePanel.BackColor = SystemColors.ControlLightLight;
-            selectedFilesToTranslatePanel.BorderStyle = BorderStyle.FixedSingle;
-            selectedFilesToTranslatePanel.Location = new Point(12, 22);
-            selectedFilesToTranslatePanel.Name = "selectedFilesToTranslatePanel";
-            selectedFilesToTranslatePanel.Size = new Size(311, 179);
-            selectedFilesToTranslatePanel.TabIndex = 2;
+            clearTranslateButton.Location = new Point(329, 51);
+            clearTranslateButton.Name = "clearTranslateButton";
+            clearTranslateButton.Size = new Size(75, 23);
+            clearTranslateButton.TabIndex = 9;
+            clearTranslateButton.Text = "Clear";
+            clearTranslateButton.UseVisualStyleBackColor = true;
+            clearTranslateButton.Click += ClearTranslateButton_Click;
             // 
             // translateButton
             // 
@@ -200,15 +190,25 @@
             translateButton.UseVisualStyleBackColor = true;
             translateButton.Click += TranslateButton_Click;
             // 
-            // clearTranslateButton
+            // selectedFilesToTranslatePanel
             // 
-            clearTranslateButton.Location = new Point(329, 51);
-            clearTranslateButton.Name = "clearTranslateButton";
-            clearTranslateButton.Size = new Size(75, 23);
-            clearTranslateButton.TabIndex = 9;
-            clearTranslateButton.Text = "Clear";
-            clearTranslateButton.UseVisualStyleBackColor = true;
-            clearTranslateButton.Click += ClearTranslateButton_Click;
+            selectedFilesToTranslatePanel.AutoScroll = true;
+            selectedFilesToTranslatePanel.BackColor = SystemColors.ControlLightLight;
+            selectedFilesToTranslatePanel.BorderStyle = BorderStyle.FixedSingle;
+            selectedFilesToTranslatePanel.Location = new Point(12, 22);
+            selectedFilesToTranslatePanel.Name = "selectedFilesToTranslatePanel";
+            selectedFilesToTranslatePanel.Size = new Size(311, 179);
+            selectedFilesToTranslatePanel.TabIndex = 2;
+            // 
+            // addFilesToTranslateButton
+            // 
+            addFilesToTranslateButton.Location = new Point(329, 22);
+            addFilesToTranslateButton.Name = "addFilesToTranslateButton";
+            addFilesToTranslateButton.Size = new Size(75, 23);
+            addFilesToTranslateButton.TabIndex = 0;
+            addFilesToTranslateButton.Text = "Add Files";
+            addFilesToTranslateButton.UseVisualStyleBackColor = true;
+            addFilesToTranslateButton.Click += AddFilesToTranslateButton_Click;
             // 
             // appContainer
             // 
@@ -228,7 +228,7 @@
             ClientSize = new Size(640, 475);
             Controls.Add(appContainer);
             Name = "Form1";
-            Text = "Form1";
+            Text = "ModTranslator";
             generateFilesContainer.ResumeLayout(false);
             generateFilesContainer.PerformLayout();
             translateFilesContainer.ResumeLayout(false);
