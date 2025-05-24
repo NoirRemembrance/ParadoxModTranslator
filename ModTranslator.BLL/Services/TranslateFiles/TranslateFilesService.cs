@@ -5,6 +5,7 @@ using ModTranslator.BO.Objects.Settings;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 
 namespace ModTranslator.BLL.Services.TranslateFiles
 {
@@ -34,7 +35,7 @@ namespace ModTranslator.BLL.Services.TranslateFiles
         /// <returns>A tuple indicating success and a message describing the outcome.</returns>
         public async Task<(bool isSuccess, string message)> TranslateFiles(TranslationRequest request)
         {
-            if(_appSettings.APISettings.ApiKey == "Put your API key here and edit Url and Model to match yours.")
+            if (_appSettings.APISettings.ApiKey == "Put your API key here and edit Url and Model to match yours.")
             {
                 return (false, "Go into the appsettings.json file and input your API settings.");
             }
@@ -80,31 +81,72 @@ namespace ModTranslator.BLL.Services.TranslateFiles
                         .Where(line =>
                         {
                             string trimmedLine = line.Trim();
-                            if (string.IsNullOrEmpty(trimmedLine) || trimmedLine.StartsWith('#')) { return true; } int colonIndex = trimmedLine.IndexOf(':');
-                            if (colonIndex <= 0) { return true; } string key = trimmedLine[..colonIndex].Trim();
+                            if (string.IsNullOrEmpty(trimmedLine) || trimmedLine.StartsWith('#')){
+                                return true;
+                            }
+                            int colonIndex = trimmedLine.IndexOf(':');
+                            if (colonIndex == -1 || colonIndex == 0) {
+                                return true;
+                            }
+                            string key = trimmedLine[..colonIndex].Trim();
                             return !existingKeys.Contains(key);
                         })];
                 }
 
                 using SemaphoreSlim fileWriteLock = new(1, 1);
+                var workChannel = Channel.CreateUnbounded<(int index, string line)>();
                 HashSet<int> processedIndices = [];
-                object lockObject = new();
 
-                List<Task> translationTasks = [.. fileLines
-                    .Select((line, index) => (line, index))
-                    .Where(t => !t.line.Trim().StartsWith(LanguageCode))
-                    .Select(t => ProcessTranslationGroup(fileLines, t.index, outputFilePath, fileWriteLock, processedIndices, lockObject))];
-
-                try
+                _ = Task.Run(async () =>
                 {
-                    await Task.WhenAll(translationTasks);
-                }
-                catch (Exception ex)
+                    foreach (var (line, index) in fileLines.Select((l, i) => (l, i)))
+                    {
+                        if (!line.Trim().StartsWith(LanguageCode) && !processedIndices.Contains(index))
+                        {
+                            _ = processedIndices.Add(index);
+                            await workChannel.Writer.WriteAsync((index, line));
+                        }
+                    }
+                    workChannel.Writer.Complete();
+                });
+
+                List<Task> workers = [];
+                for (int i = 0; i < _appSettings.RequestsSettings.MaxConcurrentRequests; i++)
                 {
-                    HasErrors = true;
-                    await File.AppendAllTextAsync(outputFilePath, $"#Error in translation tasks: {ex.Message}{Environment.NewLine}");
+                    workers.Add(Task.Run(async () =>
+                    {
+                        while (await workChannel.Reader.WaitToReadAsync())
+                        {
+                            while (workChannel.Reader.TryRead(out var task))
+                            {
+                                var (index, line) = task;
+
+                                List<string> linesToTranslate = [line.Trim()];
+                                string? translation = await GetTranslationFromAPI(linesToTranslate);
+
+                                if (translation == null)
+                                {
+                                    HasErrors = true;
+                                    continue;
+                                }
+
+                                List<string> outputLines = ProcessTranslation(linesToTranslate, translation);
+
+                                await fileWriteLock.WaitAsync();
+                                try
+                                {
+                                    await File.AppendAllTextAsync(outputFilePath, string.Join('\n', outputLines) + Environment.NewLine);
+                                }
+                                finally
+                                {
+                                    fileWriteLock.Release();
+                                }
+                            }
+                        }
+                    }));
                 }
 
+                await Task.WhenAll(workers);
                 await File.AppendAllTextAsync(outputFilePath, "#File translation finished" + Environment.NewLine);
             }
 
@@ -266,6 +308,8 @@ namespace ModTranslator.BLL.Services.TranslateFiles
             }
             else
             {
+                try
+                {
                 result = [.. originalLines.Zip(translatedLines, (original, translated) =>
                     {
                         int colonIndex = original.IndexOf(':');
@@ -274,6 +318,14 @@ namespace ModTranslator.BLL.Services.TranslateFiles
                         return $"  {key}: {value}";
                     })
                 ];
+            }
+                catch (Exception)
+                {
+                    HasErrors = true;
+                    result = ["#Error: Could not split the translation into key:value. Review the following:"];
+                    result.AddRange(originalLines.Zip(translatedLines, (original, translated) =>
+                        $"  Original: {original}\n  Translated: {translated}"));
+                }
             }
             return result;
         }
